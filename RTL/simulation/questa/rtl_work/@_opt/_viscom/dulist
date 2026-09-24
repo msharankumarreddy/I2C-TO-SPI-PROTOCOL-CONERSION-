@@ -1,0 +1,6 @@
+1 10 reset_sync 4 fast 56 D:/DOWNLOADS/FPGA_Project/RTL/simulation/questa/rtl_work 0 0 0 0 30 0
+1 9 i2c_slave 4 fast 56 D:/DOWNLOADS/FPGA_Project/RTL/simulation/questa/rtl_work 0 0 0 0 344 0
+1 10 spi_master 4 fast 56 D:/DOWNLOADS/FPGA_Project/RTL/simulation/questa/rtl_work 0 0 131072 0 187 0
+1 9 fifo_sync 4 fast 56 D:/DOWNLOADS/FPGA_Project/RTL/simulation/questa/rtl_work 0 0 0 0 131 0
+1 10 bridge_fsm 4 fast 56 D:/DOWNLOADS/FPGA_Project/RTL/simulation/questa/rtl_work 0 0 0 0 342 0
+1 9 tb_simple 4 fast 56 D:/DOWNLOADS/FPGA_Project/RTL/simulation/questa/rtl_work 0 0 180224 0 415 0

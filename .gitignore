@@ -1,0 +1,15 @@
+# Quartus build artifacts
+db/
+incremental_db/
+output_files/
+simulation/modelsim/
+*.rpt
+*.done
+*.summary
+*.smsg
+*.pin
+*.jdi
+*.sld
+*.bak
+*.qws
+*.flock

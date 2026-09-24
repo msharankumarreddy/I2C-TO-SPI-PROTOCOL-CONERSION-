@@ -1,0 +1,63 @@
+# =============================================================================
+# PROJECT/i2c_spi_bridge.qsf
+# Master Quartus Settings File. This is the ONE .qsf Quartus actually reads
+# as the project's settings when you open i2c_spi_bridge.qpf -- it combines
+# device/project settings, the source file list, the SDC reference, and the
+# pin assignments all in one place (Quartus doesn't support "importing" one
+# .qsf into another).
+#
+# CONSTRAINTS/de10lite_pins.qsf is kept alongside as a portable, documentation
+# copy of just the pin table -- convenient to reference or diff against, but
+# this file here is the one Quartus actually uses.
+# =============================================================================
+
+# ---- Device ----
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M50DAF484C7G
+set_global_assignment -name TOP_LEVEL_ENTITY de10lite_top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "24.1"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+
+# ---- Source files (synthesizable RTL only -- TESTBENCH/ is never added here) ----
+set_global_assignment -name VERILOG_FILE ../RTL/de10lite_top.v
+set_global_assignment -name VERILOG_FILE ../RTL/i2c_slave.v
+set_global_assignment -name VERILOG_FILE ../RTL/spi_master.v
+set_global_assignment -name VERILOG_FILE ../RTL/bridge_fsm.v
+set_global_assignment -name VERILOG_FILE ../RTL/fifo_sync.v
+set_global_assignment -name VERILOG_FILE ../RTL/reset_sync.v
+
+# ---- Timing constraints ----
+set_global_assignment -name SDC_FILE ../CONSTRAINTS/de10lite_timing.sdc
+
+# ---- Pin assignments (3.3V LVTTL, DE10-Lite GPIO header) ----
+set_location_assignment PIN_P11 -to MAX10_CLK1_50
+set_location_assignment PIN_B8  -to KEY0
+
+set_location_assignment PIN_V10 -to GPIO_0     ; # SDA
+set_location_assignment PIN_W10 -to GPIO_1     ; # SCL
+set_location_assignment PIN_V9  -to GPIO_2     ; # SCK
+set_location_assignment PIN_W9  -to GPIO_3     ; # MOSI
+set_location_assignment PIN_V8  -to GPIO_4     ; # MISO
+set_location_assignment PIN_W8  -to GPIO_5     ; # CS_N
+
+set_location_assignment PIN_A8  -to LEDR[0]
+set_location_assignment PIN_A9  -to LEDR[1]
+set_location_assignment PIN_A10 -to LEDR[2]
+
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to MAX10_CLK1_50
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY0
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_1
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_2
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_3
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_4
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_5
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[2]
+
+# IMPORTANT: GPIO_0 (SDA) is open-drain from the FPGA side (see i2c_slave.v),
+# but the MAX 10 I/O pin itself is push-pull. You MUST add an external
+# pull-up resistor (~4.7k to 3.3V) on the physical SDA line.
